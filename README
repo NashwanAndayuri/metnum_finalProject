@@ -1,32 +1,14 @@
-## Dataset setup
+Voice Classification with Multiple Linear Regression
 
-1. Download `Audio_Speech_Actors_01-24_16k.zip` from [RAVDESS Speech 16K on Zenodo](https://zenodo.org/records/11063852).
-2. Create a `dataset` folder next to `main.cpp` and extract the archive into it. A recording should be at a path like `dataset/Audio_Speech_Actors_01-24_16k/Actor_17/03-01-01-01-01-01-17.wav`.
+Download Audio_Speech_Actors_01-24_16k.zip here: https://zenodo.org/records/11063852
 
-## Build and run
+Create a folder named dataset next to main.cpp and extract the ZIP into it. The Actor_01 to Actor_24 folders should be inside dataset/Audio_Speech_Actors_01-24_16k/.
 
-Open PowerShell in the project folder. You need `g++` with C++17 support. The program uses the C++ standard library.
+Open PowerShell in the project folder. You need g++ with C++17 support. Run these two commands.
 
-```powershell
 g++ -std=c++17 -O2 main.cpp -o voice.exe
 .\voice.exe
-```
 
-The program trains and tests automatically when it runs. At the last prompt, enter the path to a 16 kHz, 16-bit PCM WAV file to classify it, or press Enter to exit.
+The program uses central finite differences and gradient descent to train on actors 01 to 16, then tests on actors 17 to 24. It got 311 of 458 predictions correct (67.90%). It skipped 22 test recordings without a usable pitch estimate.
 
-## How it works
-
-1. Estimate pitch using autocorrelation and count zero crossings in each recording. Scale both values before using them in the model.
-2. Fit the regression model `a * x1 + b * x2 + c` on actors 01–16. Use central finite differences to estimate the mean squared error gradient and gradient descent to update `a`, `b`, and `c`.
-3. Test on actors 17–24. For each recording, a score of at least 0.5 predicts the female label. A lower score predicts the male label.
-
-## Example results
-
-| Metric | Result |
-|---|---:|
-| Training clips used | 914 of 960 |
-| Test clips classified | 458 of 480 |
-| Training mean squared error | 0.262175 → 0.173580 |
-| Test accuracy on classified clips | 67.90% (311 of 458) |
-
-Recordings without a usable pitch estimate are skipped. The program reports how many it skipped in each split.
+At the last prompt, enter the path to a 16 kHz, 16-bit PCM WAV file to classify it, or press Enter to quit.
