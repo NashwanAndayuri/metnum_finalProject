@@ -262,8 +262,7 @@ int main(int argc, char* argv[])
             double result = f(x[0], x[1]);
             cout << "Regression score: " << result << '\n';
             cout << "Predicted RAVDESS label: "
-                 << (result >= 0.5 ? "female-labeled" : "male-labeled") << '\n';
-            cout << "This prediction refers to the RAVDESS dataset labels.\n";
+                 << (result >= 0.5 ? "This is a female voice" : "This is a male voice") << '\n';
         }
     }
 }
